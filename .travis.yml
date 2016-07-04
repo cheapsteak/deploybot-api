@@ -1,0 +1,10 @@
+language: node_js
+node_js:
+- 'node'
+sudo: required
+services:
+- docker
+after_script:
+- docker login -e="$DOCKER_EMAIL" -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD" quay.io
+- NODE_ENV=production make build
+- bash ./infra/docker.sh
