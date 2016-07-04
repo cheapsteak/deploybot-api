@@ -1,4 +1,4 @@
-FROM node:slim
+FROM mhart/alpine-node
 
 COPY package.json /src/
 
