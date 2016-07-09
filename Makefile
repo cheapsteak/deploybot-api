@@ -20,16 +20,21 @@ PRINT_ENV = printf "$@ $(NODE_ENV_STRING)\n" | $(AWK_CMD)
 
 .PHONY: server
 server:
-	$(Q) babel-node lib
+	$(Q) nodemon --debug --delay 1000ms --ignore lib/ -e js dist
 
 .PHONY: install
 install:
 	$(Q) npm install --loglevel error
 	@$(PRINT_OK)
 
+.PHONY: watch
+watch:
+	$(Q) babel lib --out-dir dist --watch --source-maps
+	@$(PRINT_OK)
+
 .PHONY: build
-build:
-	$(Q) babel -d ./dist ./lib
+build: clean
+	$(Q) babel lib --out-dir dist
 	@$(PRINT_OK)
 
 .PHONY: update
@@ -45,4 +50,9 @@ upgrade:
 .PHONY: lint
 lint:
 	$(Q) eslint lib/*.js
+	@$(PRINT_OK)
+
+.PHONY: clean
+clean:
+	$(Q) rm -rf dist
 	@$(PRINT_OK)
